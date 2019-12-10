@@ -1,0 +1,5 @@
+# Настройки сервера Apache
+Options Indexes
+DirectoryIndex index.php
+AddDefaultCharset UTF-8
+php_value mbstring.internal_encoding UTF-8
