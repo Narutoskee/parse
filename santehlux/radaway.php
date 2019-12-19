@@ -25,7 +25,7 @@ for ($i = 0; $i < count($data); $i++):
                 $art = str_replace("Артикул: ", "", $art->plaintext);
                 $art = trim($art);
                 if ($art === $item ):
-                   // $artSite['art']  = $art;
+                   $artSite['art']  = $art;
                     foreach($goods->find('div.tovar_name a') as $lnk) :
                         $links = $urlShortName . $lnk->href;// получаем ссылку с урлов товара
                                     echo '<b>' . $count . '. <a href="' . $links . '" target="_blank">' .$links . '</a></b><br>';
@@ -46,7 +46,7 @@ for ($i = 0; $i < count($data); $i++):
                                     endif;
                                     echo '<br>';
                                     flush();
-                                    usleep(600000); // 0.6 сек
+                                    usleep(800000); // 0.6 сек
                                     $html2->clear();
                                     unset($html2);
                     endforeach;
@@ -57,12 +57,13 @@ for ($i = 0; $i < count($data); $i++):
         echo implode(', ', $artSite) . '<br>';
         flush();
         $count++;
-        usleep(700000); // 0.6 сек
+        usleep(800000); // 0.6 сек
        $divContents[] = $artSite;
         echo str_repeat('&nbsp;', 100) . '<br><hr><br>';
         $html->clear();
         unset($html);
     endforeach;
+
 endfor;
 $dirName = 'radaway';
 $mc = dirname(__FILE__) . "/$dirName/"; //путь сохранения папки и файлов
