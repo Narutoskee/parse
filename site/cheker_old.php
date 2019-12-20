@@ -1,29 +1,6 @@
 <?php
 //conf
 include('../conf.php');
-//$siteArr = [
-//    'https://baranovichi.money-vdolg.xyz',
-//    'https://bobruisk.money-vdolg.xyz',
-//    'https://borisov.money-vdolg.xyz',
-//    'https://brest.money-vdolg.xyz',
-//    'https://gomel.money-vdolg.xyz',
-//    'https://grodno.money-vdolg.xyz',
-//    'https://jlobin.money-vdolg.xyz',
-//    'https://jodino.money-vdolg.xyz',
-//    'https://lida.money-vdolg.xyz',
-//    'https://minsk.money-vdolg.xyz',
-//    'https://mogilev.money-vdolg.xyz',
-//    'https://molodechno.money-vdolg.xyz',
-//    'https://mozir.money-vdolg.xyz',
-//    'https://orsha.money-vdolg.xyz',
-//    'https://pinsk.money-vdolg.xyz',
-//    'https://polock.money-vdolg.xyz',
-//    'https://rechica.money-vdolg.xyz',
-//    'https://svetlogorsk.money-vdolg.xyz',
-//    'https://vitebsk.money-vdolg.xyz',
-//    'https://money-vdolg.xyz',
-//];
-
 $fileName = [
     '../query/site1.txt',
     '../query/site2.txt',
@@ -35,20 +12,29 @@ $fileName = [
     '../query/site8.txt',
     '../query/site9.txt',
     '../query/site10.txt',
-    '../query/site11.txt',
 ];
 
 for ($x=0;$x<count($fileName);$x++){
     $data = file($fileName[$x]);
-    checkFromFile($data);
+    if (isset($data)){
+        checkFromFile($data);
+    }
+
 }
 
 function checkFromFile($data)
 {
     $start = microtime(true); //начало измерения всего скрипта
     $count = 1;
-    echo '<table border="1">';
-
+    $linkName = 'http://president.gov.by/ru/official_documents_ru/view/ukaz-325-ot-30-ijunja-2014-g-9177/';
+    echo '<table>';
+echo "<tr>
+<th>ID</th>
+<th>SITE</th>
+<th>SSL CHECK RES</th>
+<th>LINK</th>
+<th>УНП</th>
+</tr>";
     for ($i = 0; $i < count($data); $i++):
         $info = explode('	', trim($data[$i]));
         echo '<tr>';
@@ -58,6 +44,24 @@ function checkFromFile($data)
                 echo '<td>' . $count . '</td>';
                 echo '<td>' . $item .'</td>';
                 echo(isset($html->find('h1', 0)->innertext) ? ' <td style="color:white;background: green"">TEST OK</td>' : '<td style="color:white;background: red"> SSl BAD !!!</td>');
+                $link = $html->find('a[href='.$linkName.']', 0);
+                if (isset($link)){
+                    echo '<td style="color:white;background: green"> LINK OK </td>';
+                }
+                else{
+                   echo '<td style="color:white;background: red"> NO LINK !!!</td>'  ;
+                }
+
+                $string = $html;
+                if(stristr($string, 'УНП') !== FALSE) {
+                    echo '<td style="color:white;background: green"> UNP OK </td>';
+
+                    }
+                    else{
+                        echo '<td style="color:white;background: red"> NO UNP !!!</td>'  ;
+                }
+
+
             endif;
         endforeach;
         $count++;
@@ -91,4 +95,11 @@ function SiteStatus($siteArr)
 
 //SiteStatus($siteArr);
 
-// dirname(__FILE__);
+?>
+<style>
+    table, td,th{
+        border: 1px solid #000;
+        border-collapse: collapse;
+        padding: 5px;
+    }
+</style>
