@@ -24,31 +24,52 @@ include('../conf.php');
 //    'https://money-vdolg.xyz',
 //];
 
+$fileName = [
+    '../query/site1.txt',
+    '../query/site2.txt',
+    '../query/site3.txt',
+    '../query/site4.txt',
+    '../query/site5.txt',
+    '../query/site6.txt',
+    '../query/site7.txt',
+    '../query/site8.txt',
+    '../query/site9.txt',
+    '../query/site10.txt',
+    '../query/site11.txt',
+];
 
-$data = file('../query/site.txt');
+for ($x=0;$x<count($fileName);$x++){
+    $data = file($fileName[$x]);
+    checkFromFile($data);
+}
+
 function checkFromFile($data)
 {
     $start = microtime(true); //начало измерения всего скрипта
     $count = 1;
-    echo '<ul>';
+    echo '<table border="1">';
+
     for ($i = 0; $i < count($data); $i++):
         $info = explode('	', trim($data[$i]));
+        echo '<tr>';
         foreach ($info as $item):
             $html = file_get_html_curl($item);
             if (isset($html)):
-                echo '<li>' . $count . '  ' . $item;
-                echo(isset($html->find('h1', 0)->innertext) ? ' TEST OK' : '  ssl bad');
-                echo '</li>';
+                echo '<td>' . $count . '</td>';
+                echo '<td>' . $item .'</td>';
+                echo(isset($html->find('h1', 0)->innertext) ? ' <td style="color:white;background: green"">TEST OK</td>' : '<td style="color:white;background: red"> SSl BAD !!!</td>');
             endif;
         endforeach;
         $count++;
+        echo '</tr>';
     endfor;
-    echo '</ul>';
+
+    echo '</table>';
     $time = microtime(true) - $start;
     printf('Скрипт выполнялся %.4F сек.', $time);
 }
 
-checkFromFile($data);
+
 
 
 function SiteStatus($siteArr)
