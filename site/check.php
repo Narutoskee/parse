@@ -48,24 +48,28 @@ while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
 if($key==1){
     if ($key == $count) {
         $arr[] = trim($item);
-       // echo "<th> $item  $count</th>";
+  //  echo "<th> $item  $count</th>";
     }
     else{
         echo "<td>$item</td>";
-        $arr['site'] = trim($item);
     }
-    $myArr[]= $arr;
-}
+ }
 $count++;
     }
     echo "<tr>";
-
 }
-
 echo "</table>";
 fclose($handle);
 
-var_dump($myArr);
+$fp = fopen('file.csv', 'w');
+
+foreach ($arr as $fields) {
+    fputcsv($fp, $fields);
+}
+
+fclose($fp);
+
+
 
 function cheker($myArr){
     $start = microtime(true); //начало измерения всего скрипта
